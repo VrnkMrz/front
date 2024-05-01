@@ -1,0 +1,35 @@
+.btn-container{
+  display: flex;
+  flex-direction: row;
+}
+
+.wagon-info {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f3f3f3;
+    border: 1px solid #d3d3d3;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .wagon-info h2 {
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .wagon-info ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .wagon-info li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eaeaea;
+    color: #555;
+  }
+  
+  .wagon-info li:last-child {
+    border-bottom: none;
+  }
+  

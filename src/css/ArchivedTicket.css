@@ -1,0 +1,72 @@
+.archived_header{
+  background: #a00000;
+  color: #FFFFFF;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.archived-card {
+    background: #FFFFFF;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.archived-ticket {
+  width: 90%;
+}
+  
+.archived-ticket-date {
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+  align-self: flex-start;
+}
+  
+  .archived-ticket-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+  
+  .train-number {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4F4F4F;
+  }
+  
+  .route {
+    font-size: 1rem;
+    color: #828282;
+  }
+
+  .passengers {
+    background: #F2F2F2;
+    padding: 8px;
+    border-radius: 8px;
+    width: 100%;
+  }
+  
+  .passenger {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #E0E0E0;
+    padding: 8px 0;
+  }
+  
+  .passenger:last-child {
+    border-bottom: none;
+  }

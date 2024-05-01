@@ -1,0 +1,38 @@
+.info_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background: #F2F2F2; */
+    border-radius: 8px;
+    margin: 1rem auto;
+    padding: 16px;
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
+    align-items: center;
+  }
+  
+  .user-info {
+    background: #F2F2F2;
+    width: 90%;
+    border: 1px solid #ccc;
+    border-radius: 5px;  
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .user-info h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .info-field {
+    margin-bottom: 10px;
+  }
+  
+  .info-field label {
+    font-weight: bold;
+  }
+  
+  .info-field span {
+    margin-left: 10px;
+  }
+  

@@ -1,0 +1,123 @@
+.ticket-card {
+    background: #F2F2F2;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ticket {
+    width: 90%;
+  }
+
+  
+  .ticket-date {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+    align-self: flex-start;
+  }
+  
+  .ticket-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    width: 100%;
+  }
+  
+  .train-number {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #4F4F4F;
+  }
+  
+  .route {
+    font-size: 1rem;
+    color: #828282;
+  }
+  
+  .times {
+    display: flex;
+    align-items: center;
+  }
+  
+  .times > span {
+    margin: 0 8px;
+  }
+  
+  .travel-time {
+    color: #2F80ED;
+  }
+  
+  .passengers {
+    background: #F2F2F2;
+    padding: 8px;
+    border-radius: 8px;
+    width: 100%;
+  }
+  
+  .passenger {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #E0E0E0;
+    padding: 8px 0;
+  }
+  
+  .passenger:last-child {
+    border-bottom: none;
+  }
+  
+  .passenger > span {
+    font-size: 0.9rem;
+    color: #333333;
+  }
+  
+  .return-ticket-button {
+    color: #fff;
+    background-color: rgb(126, 55, 55);
+    font-weight: 700;
+    padding: 1rem;
+    margin-top: 1rem;
+    border-radius: 4px;
+    border: none;
+    transition: 0.2s all;
+    font-size: 0.8rem;
+    width: auto; 
+    align-self: center; 
+  }
+  
+  .confirm-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.confirm-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+.confirm-content p {
+    margin: 20px 0;
+}
+
+.confirm-content button {
+    margin: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+}

@@ -1,0 +1,226 @@
+body {
+    margin: 0 !important;
+	overflow: auto !important;
+	font-family: 'Montserrat', sans-serif  !important;
+}
+
+h1{
+    font-size: 1rem !important;
+    text-transform: uppercase;
+    font-weight: 500 !important;
+}
+
+.header{
+	font-size: 3vw !important;
+    text-transform: uppercase;
+    font-weight: 600 !important;
+}
+
+p{
+    font-size: 1rem !important; 
+	font-weight: 400 !important;
+}
+
+#booking::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	top: 0;
+	background: rgba(94, 102, 64, 0.4);
+}
+
+.booking-form {
+	background-color: #fff;	
+	padding: 1vw;
+	-webkit-box-shadow: 5px 20px 100px -5px rgba(0, 0, 0, 0.3);
+	box-shadow: 0px 5px 20px -5px rgba(0, 0, 0, 0.3);
+	border-radius: 4px;
+	margin: 2vw;
+    max-width: 500px;
+	flex: 1; 
+	margin-right: 20px;
+}
+
+.booking-form .form-group {
+	position: relative;
+	margin-bottom: 30px;
+	justify-content: space-evenly;
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+
+.booking-form .form-control {
+	background-color: #ebecee;
+	border-radius: 4px;
+	border: none;
+	height: 40px;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+	color: #3e485c;
+	font-size: 0.7rem;
+}
+
+.booking-form .form-control::-webkit-input-placeholder {
+	color: rgba(62, 72, 92, 0.3);
+}
+
+.booking-form .form-control:-ms-input-placeholder {
+	color: rgba(62, 72, 92, 0.3);
+}
+
+.booking-form .form-control::placeholder {
+	color: rgba(62, 72, 92, 0.3);
+}
+
+.booking-form input[type="date"].form-control:invalid {
+	color: rgba(62, 72, 92, 0.3);
+}
+
+.booking-form select.form-control {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+.booking-form select.form-control+.select-arrow {
+	position: absolute;
+	right: 0px;
+	bottom: 4px;
+	width: 32px;
+	line-height: 32px;
+	height: 32px;
+	text-align: center;
+	pointer-events: none;
+	color: rgba(62, 72, 92, 0.3);
+	font-size: 14px;
+}
+
+.booking-form select.form-control+.select-arrow:after {
+	content: '\279C';
+	display: block;
+	-webkit-transform: rotate(90deg);
+	transform: rotate(90deg);
+}
+
+.booking-form .form-label {
+	display: inline-block;
+	color: #3e485c;
+	font-weight: 400;
+	padding-right: 1rem;
+}
+
+.booking-form .submit-btn {
+	display: inline-block;
+	color: #fff;
+	background-color: rgb(126, 55, 55);
+	font-weight: 700;
+	padding: 14px 30px;
+	border-radius: 4px;
+	border: none;
+	-webkit-transition: 0.2s all;
+	transition: 0.2s all;
+	font-size: 1rem;
+}
+
+.booking-cta {
+	margin-top: 80px;
+	/* margin-bottom: 30px; */
+}
+
+.booking-cta h1 {
+	text-transform: uppercase;
+	color: #fff;
+	font-weight: 700;
+	font-size: 3.3vw;
+	margin: 0;
+	text-align: center;
+}
+
+.booking-cta p {
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 1rem; 
+	margin: 0;
+	text-align: center;
+	font-weight: 700;
+}
+
+
+.book-btn {
+    background-color: rgb(126, 55, 55);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 20px 20px;
+    border-radius: 5px;
+    font-size: 1rem;
+	height: 50%;
+	margin: 10px;
+    align-items: center;
+    display: flex;
+}
+
+.seat-info {
+	display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+	height: 100%;
+}
+
+#selected-time-message {
+    padding: 10px;
+    background-color: #dff0d8;
+    border: 1px solid #dce4ec;
+    margin-top: 20px;
+}
+
+.departure-info, .arrival-info {
+    text-align: left;
+}
+
+.price-info, .seats-info {
+
+    text-align: right;
+}
+
+.book-btn:hover {
+    background-color: rgb(150, 22, 22);
+}
+
+.image_background{
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover; 
+	background-attachment: fixed; 
+	height: 100vh; 
+	width: 100vw;
+}
+
+.booking-content {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+  }
+  
+  .map-container {
+	flex: 1; 
+	height: 400px; 
+  }
+  
+  /* Додаткові стилі для адаптивного дизайну, якщо потрібно */
+  @media (max-width: 768px) {
+	.booking-content {
+	  flex-direction: column;
+	}
+  
+	.booking-form,
+	.map-container {
+	  flex: none;
+	  width: 100%;
+	  margin-right: 0;
+	}
+  }
+  

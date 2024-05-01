@@ -1,0 +1,47 @@
+.popup-dropdown {
+    position: absolute;
+    top: 100%; 
+    left: 75%; 
+    width: 25%;
+    max-width: 300px; 
+    background: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-radius: 8px;
+    z-index: 1000;
+    overflow: hidden; 
+    border: 1px solid #ccc;
+}
+
+.popup-dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.popup-dropdown li {
+    padding: 1vw;
+    color: #333;
+    font-size: 14px; /* Зменшений розмір шрифту для кращого читання на мобільних */
+    font-family: 'Arial', sans-serif;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s;
+}
+
+.popup-dropdown li:last-child {
+    border-bottom: none;
+}
+
+.popup-dropdown li:hover {
+    background-color: #f0f0f0;
+}
+
+.popup-dropdown li a {
+    text-decoration: none;
+    color: #0056b3;
+    display: block;
+    transition: color 0.3s;
+}
+
+.popup-dropdown li a:hover {
+    color: #003580;
+}

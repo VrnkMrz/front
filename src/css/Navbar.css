@@ -1,0 +1,47 @@
+/* Navbar.css */
+.navbar {
+	background-color: rgb(126, 55, 55);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+  }
+  
+  .navbar-container {
+    width: 100%;
+    max-width: 1200px; /* Adjust as needed */
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .navbar-logo {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+  
+  .navbar-logo img {
+    margin: 10px;
+    width: 3.8rem;
+    border-radius: 50%;
+  }
+  
+  .navbar-links a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    padding: 10px;
+  }
+  
+  .navbar-links img{
+    margin-right: 10px;
+    width: 2rem;
+    cursor: pointer;
+  }
+  
+  /* Responsive adjustments might be needed as well */
+  
