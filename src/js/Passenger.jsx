@@ -73,7 +73,7 @@ const Passengers = () => {
           <div key={passenger.id} className='passenger_pass'>
             {passenger.firstName} {passenger.lastName}
             <button className="delete-btn" onClick={(e) => {
-              e.stopPropagation(); // Запобігаємо пропагації події
+              e.stopPropagation(); 
               setShowConfirmDialog(true);
               setPassengerToDelete(passenger.id);
             }}>X</button>

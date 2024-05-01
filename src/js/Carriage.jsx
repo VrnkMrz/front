@@ -1,74 +1,44 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Seat from './Seats';
-import CarrigeFotter from './CarrigeFotter';
+import CarrigeFooter from './CarrigeFotter';
 import '../css/Carriage.css';
 
 const Carriage = () => {
-  const mockcompartments = [
-    {
-      compartmentNumber: 1,
-      seats: [
-        { "number": 1, "isOccupied": false, "price": 100 },
-        { "number": 2, "isOccupied": false, "price": 150 },
-        { "number": 3, "isOccupied": true, "price": 200 },
-        { "number": 4, "isOccupied": false, "price": 180 }
-      ]
-    },
-    {
-      compartmentNumber: 2,
-      seats: [
-        { "number": 5, "isOccupied": false, "price": 220 },
-        { "number": 6, "isOccupied": false, "price": 130 },
-        { "number": 7, "isOccupied": true, "price": 90 },
-        { "number": 8, "isOccupied": false, "price": 210 }
-      ]
-    },
-    {
-      compartmentNumber: 3,
-      seats: [
-        { "number": 9, "isOccupied": false, "price": 240 },
-        { "number": 10, "isOccupied": false, "price": 70 },
-        { "number": 11, "isOccupied": true, "price": 180 },
-        { "number": 12, "isOccupied": false, "price": 200 }
-      ]
-    },
-    {
-      compartmentNumber: 4,
-      seats: [
-        { "number": 13, "isOccupied": false, "price": 120 },
-        { "number": 14, "isOccupied": false, "price": 250 },
-        { "number": 15, "isOccupied": true, "price": 150 },
-        { "number": 16, "isOccupied": true, "price": 100 }
-      ]
-    },
-    {
-      compartmentNumber: 5,
-      seats: [
-        { "number": 17, "isOccupied": false, "price": 220 },
-        { "number": 18, "isOccupied": false, "price": 130 },
-        { "number": 19, "isOccupied": true, "price": 90 },
-        { "number": 20, "isOccupied": false, "price": 210 }
-      ]
-    },
-  ];
-  
   const [selectedSeats, setSelectedSeats] = useState(new Set());
+  const [compartments, setCompartments] = useState([]);
+  const [totalTicketPrice, setTotalTicketPrice] = useState(0); // State to hold total ticket price
+
   useEffect(() => {
-    localStorage.setItem('selectedSeatCount', JSON.stringify(selectedSeats.size));
-  }, [selectedSeats]);
-  
-  const calculateTotalPrice = (selectedSeats, compartments) => {
-    let totalPrice = 0;
-    selectedSeats.forEach(seatNumber => {
-      compartments.forEach(compartment => {
-        compartment.seats.forEach(seat => {
-          if (seat.number === seatNumber && !seat.isOccupied) {
-            totalPrice += seat.price;
-          }
-        });
-      });
-    });
-    return totalPrice;
+    const selectedWagon = JSON.parse(localStorage.getItem('selectedWagon'));
+    if (selectedWagon) {
+      fetchSeatData(selectedWagon);
+      fetchTicketPrices(selectedWagon);
+    }
+  }, []);
+
+  const fetchSeatData = (wagon) => {
+    axios.get(`http://localhost:9001/tickets/available-seats/${wagon.wagonId}`)
+      .then(response => {
+        const groupedSeats = groupSeatsIntoCompartments(response.data);
+        setCompartments(groupedSeats);
+      })
+      .catch(error => console.error('Error fetching available seats:', error));
+  };
+
+  const fetchTicketPrices = (wagon) => {
+    axios.get(`http://localhost:9001/routes/full`, {
+      params: {
+        wagon_id: wagon.wagonId,
+        departure_order: wagon.departure.order,
+        arrival_order: wagon.arrival.order
+      }
+    })
+    .then(response => {
+      const totalPrice = response.data.reduce((acc, part) => acc + part.price, 0);
+      setTotalTicketPrice(totalPrice);
+    })
+    .catch(error => console.error('Error fetching ticket prices:', error));
   };
 
   const handleSelectSeat = (number, isSelected) => {
@@ -83,25 +53,35 @@ const Carriage = () => {
     });
   };
 
+  function groupSeatsIntoCompartments(seats, compartmentSize = 4) {
+    const compartments = [];
+    for (let i = 0; i < seats.length; i += compartmentSize) {
+      compartments.push(seats.slice(i, i + compartmentSize));
+    }
+    return compartments;
+  }  
+
   return (
     <div className='carriage-card'>
       <div className="carriage">
-        {mockcompartments.map(compartment => (
-          <div key={compartment.compartmentNumber} className="compartment">
-            {compartment.seats.map(seat => (
+        {compartments.map((compartment, index) => (
+          <div key={index} className="compartment">
+            {compartment.map(seat => (
               <Seat
+                key={seat.number}
                 seatNumber={seat.number}
-                isOccupied={seat.isOccupied}
-                onSelect={handleSelectSeat}
+                isOccupied={!seat.isFree}
+                onSelect={() => handleSelectSeat(seat.number, !selectedSeats.has(seat.number))}
                 isSelected={selectedSeats.has(seat.number)}
               />
             ))}
           </div>
         ))}
       </div>
-      <CarrigeFotter selectedSeatsCount={selectedSeats.size} selectedSeatsPrice={calculateTotalPrice(selectedSeats, mockcompartments)} />
+      <CarrigeFooter selectedSeatsCount={selectedSeats.size} selectedSeatsPrice={totalTicketPrice} />
     </div>
   );
 };
 
 export default Carriage;
+

@@ -121,3 +121,14 @@
     padding: 10px 20px;
     cursor: pointer;
 }
+
+.no-tickets{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.no-tickets p {
+  font-weight: 700 !important;
+  padding: 2vw;
+}

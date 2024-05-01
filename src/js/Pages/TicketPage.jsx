@@ -1,52 +1,49 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 import Navbar from '../Navbar';
 import Ticket from '../Ticket';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-const mockTicketsData = [
-  {
-    usageTimestamp: "8 Квітня, Понеділок",
-    wagonType: "Івано-Франківськ - Львів",
-    departureTime: "04:00",
-    arrivalTime: "06:58",
-    trainNumber: "867Д",
-    priceWithDiscount: 100,
-    passengers: [
-      { firstName: "Вероніка Мороз", wagonNumber: 4, seat: 7 },
-      { firstName: "Богдан Вишар", wagonNumber: 3, seat: 8 }
-    ]
-  },
-  {
-    usageTimestamp: "9 Квітня, Вівторок",
-    wagonType: "Київ - Одеса",
-    departureTime: "22:00",
-    arrivalTime: "06:20",
-    trainNumber: "092Л",
-    priceWithDiscount: 80,
-    passengers: [
-      { firstName: "Олексій Какчук", wagonNumber: 5, seat: 12 },
-      { firstName: "Марія Марків", wagonNumber: 5, seat: 13 }
-    ]
-  },
-  {
-    usageTimestamp: "10 Квітня, Середа",
-    wagonType: "Харків - Дніпро",
-    departureTime: "14:30",
-    arrivalTime: "17:45",
-    trainNumber: "755Д",
-    passengers: [
-      { firstName: "Андрій Стус", wagonNumber: 2, seat: 32 },
-      { firstName: "Ірина Шевченко", wagonNumber: 2, seat: 33 }
-    ]
-  }
-];
-
 const TicketPage = () => {
     const [tickets, setTickets] = useState([]);
 
     useEffect(() => {
-        setTickets(mockTicketsData);
+        const fetchTickets = async () => {
+            const token = localStorage.getItem('token'); 
+            try {
+                const response = await axios.get('http://localhost:9001/tickets', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+                const validTickets = response.data
+                    .filter(ticket => ticket.usage_timestamp === null)  
+                    .map(ticket => ({
+                        id: ticket.id,
+                        usageTimestamp: ticket.usage_timestamp,
+                        departureTime: ticket.routeParts[0]?.departure_time_minutes,
+                        arrivalTime: ticket.routeParts[0]?.arrival_time_minutes,
+                        trainNumber: ticket.train.number,
+                        priceWithDiscount: ticket.price_with_discount,
+                        passengers: `${ticket.passenger.firstName} ${ticket.passenger.lastName}`,
+                        wagonType: ticket.wagon.type
+                    }));
+                
+                if (validTickets.length > 0) {
+                    setTickets(validTickets);
+                } else {
+                    setTickets([]);
+                    toast.info("All your tickets have been used or no tickets found.");
+                }
+            } catch (error) {
+                console.error("Failed to fetch tickets:", error);
+                toast.error("Failed to load tickets!");
+            }
+        };
+
+        fetchTickets();
     }, []);
 
     const handleTicketReturnConfirm = () => {
@@ -55,29 +52,36 @@ const TicketPage = () => {
 
     return (
         <div>
-            <Navbar label = {"TICKET HISTORY"}/>
-              {tickets.map((ticket, index) => (
-                  <Ticket
-                      key={index}
-                      usageTimestamp={ticket.usageTimestamp}
-                      wagonType={ticket.wagonType}
-                      departureTime={ticket.departureTime}
-                      arrivalTime={ticket.arrivalTime}
-                      trainNumber={ticket.trainNumber}
-                      priceWithDiscount={ticket.priceWithDiscount}
-                      passengers={ticket.passengers}
-                      onTicketReturnConfirm={handleTicketReturnConfirm} 
-                  />
-              ))} 
+            <Navbar label="TICKET HISTORY" />
+            {tickets.length > 0 ? (
+                tickets.map((ticket, index) => (
+                    <Ticket
+                        key={index}
+                        usageTimestamp={ticket.usageTimestamp}
+                        wagonType={ticket.wagonType}
+                        departureTime={ticket.departureTime}
+                        arrivalTime={ticket.arrivalTime}
+                        trainNumber={ticket.trainNumber}
+                        priceWithDiscount={ticket.priceWithDiscount}
+                        passengers={ticket.passengers}
+                        onTicketReturnConfirm={handleTicketReturnConfirm} 
+                    />
+                ))
+            ) : (
+                <div className="no-tickets">
+                    <p>You have not purchased any tickets yet. Start your adventure!</p>
+                    <Link to="/book" className="return-ticket-button">Book Tickets</Link>
+                </div>
+            )}
             <ToastContainer
-                  position="top-center"
-                  autoClose={5000}
-                  hideProgressBar={false}
-                  closeOnClick={true}
-                  pauseOnHover={true}
-                  draggable={true}
-                  progress={undefined}
-              />
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                closeOnClick={true}
+                pauseOnHover={true}
+                draggable={true}
+                progress={undefined}
+            />
         </div>
     );
 };

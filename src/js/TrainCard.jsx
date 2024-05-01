@@ -1,59 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
-const TrainCard = ({departure, arrival}) => {
-  const [trainSchedules, setTrainSchedules] = useState([]);
+const TrainCard = ({ wagons, setRouteParts }) => {
+  const navigate = useNavigate();
+  const [seatsAvailable, setSeatsAvailable] = useState({});
+  const [wagonsWithSeats, setWagonsWithSeats] = useState([]);
+  const [selectedWagonId, setSelectedWagonId] = useState(null);  
 
   useEffect(() => {
-    const fetchStations = async () => {
+    const fetchAvailableSeats = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/stations/by-names', {
-          params: { departure, arrival }
-        });
-        setTrainSchedules(response.data.map(schedule => ({
-          departureTime: schedule.departure_time_minutes,
-          arrivalTime: schedule.arrival_time_minutes,
-          departure: schedule.departure_station,
-          arrival: schedule.arrival_station,
-          price: schedule.price,
-          seatsAvailable: schedule.free_seats
+        const seatsData = await Promise.all(
+          wagons.map((wagon) =>
+            axios.get(`http://localhost:9001/tickets/available-seats/${wagon.wagonId}`)
+              .then((response) => ({
+                wagonId: wagon.wagonId,
+                seatsAvailable: response.data,
+              }))
+          )
+        );
+        const updatedSeats = seatsData.reduce(
+          (acc, { wagonId, seatsAvailable }) => {
+            acc[wagonId] = seatsAvailable;
+            return acc;
+          },
+          {}
+        );
+        setSeatsAvailable(updatedSeats);
+        setWagonsWithSeats(wagons.map(wagon => ({
+          ...wagon,
+          seatsAvailable: updatedSeats[wagon.wagonId],
         })));
       } catch (error) {
-        console.error('Failed to fetch stations', error);
+        console.error("Error fetching available seats:", error);
       }
     };
+    fetchAvailableSeats();
+  }, [wagons]);
 
-    if (departure && arrival) {
-      fetchStations();
+  const handleCardClick = async (wagon) => {
+    try {
+      const response = await axios.get(`http://localhost:9001/routes/full`, {
+        params: {
+          wagon_id: wagon.wagonId,
+          departure_order: wagon.departure.order,
+          arrival_order: wagon.arrival.order
+        },
+      });
+      setRouteParts(response.data || []); 
+      setSelectedWagonId(wagon.wagonId); 
+    } catch (error) {
+      console.error("Error on card click:", error);
     }
-  }, [departure, arrival]);
+  };
 
-  const navigate = useNavigate();
-  
-  const bookSeat = () => {
-    navigate('/select-seat'); 
+  const bookSeat = (wagon) => {
+    localStorage.setItem('selectedWagon', JSON.stringify(wagon)); // Store wagon data in localStorage
+    navigate("/select-seat");
+  };
+
+  const minutesToTime = (minutes) => {
+    const adjustedMinutes = minutes % 1440;
+    const hours = Math.floor(adjustedMinutes / 60);
+    const mins = adjustedMinutes % 60;
+    return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
   };
 
   return (
     <div id="train-time-info" className="section">
-      {trainSchedules.map((schedule, index) => (
-        <div key={index} className="train-card">
-          <div className="train-schedule-header">
-            <h1>{schedule.departure} to {schedule.arrival}</h1>
+      {wagonsWithSeats.map((wagon, index) => (
+        <div key={index} className={`train-card ${selectedWagonId === wagon.wagonId ? 'selected' : ''}`} onClick={() => handleCardClick(wagon)}>
+          <div className="train-time-info">
+            <p>Departs: {minutesToTime(wagon.departure.departureTimeMinutes)}</p>
           </div>
           <div className="train-time-info">
-            <p>Departs: {schedule.departure} - Arrives: {schedule.arrival}</p>
+            <p>Arrives: {minutesToTime(wagon.arrival.arrivalTimeMinutes)}</p>
           </div>
           <div className="seat-info">
-            <p>Seats available: {schedule.seatsAvailable}</p>
+            <p>Seats available: {wagon.seatsAvailable.length ? wagon.seatsAvailable.length : 'N/A'}</p>
           </div>
-          <div className="seat-info">
-            <p>Price: {schedule.price}</p>
-          </div>
-          <button className="book-btn" onClick={bookSeat}>
-            <p>Choose</p>
-          </button>
+          <button className="book-btn" onClick={() => bookSeat(wagon)}>Choose</button>
         </div>
       ))}
     </div>

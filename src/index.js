@@ -27,7 +27,7 @@ ReactDOM.render(
   <Router>
     <React.StrictMode>
       <Routes>
-        {/* <Route path='/' element={<Register />} />
+        <Route path='/' element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/book" element={<BookingPage />} />
@@ -43,7 +43,7 @@ ReactDOM.render(
         <Route path='/dashboard_services' element={<DashboardServicePage />} />
         <Route path='/dashboard_wagons' element={<DashboardWagonPage />} />
         <Route path='/account' element={<InfoUser />} />
-        <Route path='/admin-panel' element={<AdminPanel/>} /> */}
+        <Route path='/admin-panel' element={<AdminPanel/>} />
       </Routes>
     </React.StrictMode>
   </Router>,

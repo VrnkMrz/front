@@ -9,6 +9,9 @@ const SelectWagonPage = () => {
   const [departure, setDeparture] = useState({});
   const [arrival, setArrival] = useState({});
   const [wagons, setWagons] = useState([]);
+  const [routeParts, setRouteParts] = useState({});
+  const [departureTimeFilter, setDepartureTimeFilter] = useState("");
+  const [arrivalTimeFilter, setArrivalTimeFilter] = useState("");
 
   useEffect(() => {
     const storedDeparture = JSON.parse(localStorage.getItem("departure"));
@@ -23,22 +26,30 @@ const SelectWagonPage = () => {
 
   useEffect(() => {
     if (departure.id && arrival.id) {
-      axios
-        .get("http://localhost:9001/routes", {
-          params: {
-            arrival_station: arrival.id,
-            departure_station: departure.id,
-          },
-        })
-        .then((response) => {
-          console.log(response.data);
-          setWagons(response.data);
-        })
-        .catch((error) => {
-          console.error("Error fetching routes:", error);
+      axios.get("http://localhost:9001/routes", {
+        params: {
+          arrival_station: arrival.id,
+          departure_station: departure.id,
+        },
+      })
+      .then((response) => {
+        const filteredWagons = response.data.filter(wagon => {
+          const departureMinutes = parseInt(wagon.departure.departureTimeMinutes, 10);
+          const arrivalMinutes = parseInt(wagon.arrival.arrivalTimeMinutes, 10);
+          return (!departureTimeFilter || (departureMinutes >= departureTimeFilter && departureMinutes < departureTimeFilter + 60))
+              && (!arrivalTimeFilter || (arrivalMinutes >= arrivalTimeFilter && arrivalMinutes < arrivalTimeFilter + 60));
         });
+        setWagons(filteredWagons);
+      })
+      .catch((error) => {
+        console.error("Error fetching routes:", error);
+      });
     }
-  }, [departure, arrival]);
+  }, [departure, arrival, departureTimeFilter, arrivalTimeFilter]);
+
+  const handleTimeChange = (event, setTime) => {
+    setTime(event.target.value);
+  };
 
   return (
     <div>
@@ -52,18 +63,26 @@ const SelectWagonPage = () => {
           </div>
         </div>
       </div>
-      <TrainCard wagons={wagons} />
-      <MapRoute />
-      {wagons.length > 0 && (
-        <div>
-          <h2>Routes</h2>
-          <ul>
-            {wagons.map((route) => (
-              <li key={route.id}>{route.name}</li>
-            ))}
-          </ul>
+      <div className="time-filter">
+            <select onChange={(e) => handleTimeChange(e, setDepartureTimeFilter)} value={departureTimeFilter}>
+              <option value="">Any Departure Time</option>
+              {[...Array(24).keys()].map(hour => (
+                <option key={hour} value={hour * 60}>{`${hour.toString().padStart(2, '0')}:00`}</option>
+              ))}
+            </select>
+            <select onChange={(e) => handleTimeChange(e, setArrivalTimeFilter)} value={arrivalTimeFilter}>
+              <option value="">Any Arrival Time</option>
+              {[...Array(24).keys()].map(hour => (
+                <option key={hour} value={hour * 60}>{`${hour.toString().padStart(2, '0')}:00`}</option>
+              ))}
+            </select>
+          </div>
+      <div className="body-wrapper">
+        <TrainCard wagons={wagons} routeParts={routeParts} setRouteParts={setRouteParts} />
+        <div className="map">
+          <MapRoute route_parts={routeParts} />
         </div>
-      )}
+      </div>
     </div>
   );
 };

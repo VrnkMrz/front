@@ -8,7 +8,7 @@ const Popup = ({ onClose }) => {
       <ul>
         <li><Link to="/account" onClick={onClose}>Account</Link></li>
         <li><Link to="/tickets" onClick={onClose}>History</Link></li>
-        <li><Link to="/archived" onClick={onClose}>Архів квитків</Link></li>
+        <li><Link to="/archived" onClick={onClose}>Archive</Link></li>
       </ul>
     </div>
   );

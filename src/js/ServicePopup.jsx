@@ -1,19 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../css/ServicePopup.css';
 
-const ServicePopup = ({ isOpen, onClose, onAddServices }) => {
+const ServicePopup = ({ isOpen, onClose, onAddServices, wagonId }) => {
+    const [services, setServices] = useState([]);
     const [serviceQuantities, setServiceQuantities] = useState({});
 
-    const services = [
-        { id: 1, name: "Wi-Fi", price: 5 },
-        { id: 2, name: "Meal", price: 10 },
-        { id: 3, name: "Extra Luggage", price: 15 },
-        { id: 4, name: "Window Seat", price: 8 },
-        { id: 5, name: "Pet Friendly", price: 12 }
-    ];
+    useEffect(() => {
+        if (isOpen) {
+            const storedWagon = localStorage.getItem('selectedWagon');
+            if (storedWagon) {
+                const wagon = JSON.parse(storedWagon);
+                const wagonId = wagon.wagonId;
+
+                axios.get(`http://localhost:9001/additional-services/wagon/${wagonId}`)
+                    .then(response => {
+                        setServices(response.data);
+                        const initialQuantities = {};
+                        response.data.forEach(service => {
+                            initialQuantities[service.id] = 0;
+                        });
+                        setServiceQuantities(initialQuantities);
+                    })
+                    .catch(error => console.error('Error fetching services:', error));
+            }
+        }
+    }, [isOpen]); 
 
     const handleQuantityChange = (id, isChecked) => {
-        const newQuantity = isChecked ? 1 : 0; // Set quantity to 1 if checked, otherwise to 0
+        const newQuantity = isChecked ? 1 : 0; 
         setServiceQuantities(prevQuantities => ({
             ...prevQuantities,
             [id]: newQuantity
@@ -24,10 +39,13 @@ const ServicePopup = ({ isOpen, onClose, onAddServices }) => {
         const selectedServices = services
             .filter(service => serviceQuantities[service.id] > 0)
             .map(service => ({
-                ...service,
+                id: service.id,
+                name: service.name,
+                price: service.price,
                 quantity: serviceQuantities[service.id]
             }));
         onAddServices(selectedServices);
+        localStorage.setItem('selectedServices', JSON.stringify(selectedServices));
     };
 
     if (!isOpen) return null;
