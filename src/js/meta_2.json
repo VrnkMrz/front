@@ -1,0 +1,596 @@
+{
+  "cubes": [
+    {
+      "name": "fact_sales_and_usage",
+      "fact_type": "transactional",
+      "table_source": "fact_sales_and_usage",
+      "hierarchies": [],
+      "dimensions": [
+        {
+          "name": "Wagon",
+          "FKname": "fact_sales_and_usage_wagon_id_fkey",
+          "PKname": "wagon_pkey",
+          "table_source": "Wagon",
+          "hierarchies": [
+            {
+              "name": "Train",
+              "table_source": "Wagon",
+              "hierarchies": [
+                {
+                  "name": "Class",
+                  "table_source": "Wagon",
+                  "column": [
+                    {
+                      "name": "value",
+                      "datatype": "string"
+                    }
+                  ],
+                  "hierarchies": []
+                },
+                {
+                  "name": "Type",
+                  "table_source": "Wagon",
+                  "column": [
+                    {
+                      "name": "value",
+                      "datatype": "string"
+                    }
+                  ],
+                  "hierarchies": []
+                }
+              ],
+              "column": [
+                {
+                  "name": "number",
+                  "datatype": "string"
+                }
+              ]
+            },
+            {
+              "name": "Type",
+              "table_source": "Type",
+              "column": [
+                {
+                  "name": "value",
+                  "datatype": "string"
+                }
+              ],
+              "hierarchies": []
+            }
+          ],
+          "column": [
+            {
+              "name": "number",
+              "datatype": "string"
+            }
+          ]
+        },
+        {
+          "name": "Seat",
+          "FKname": "fact_sales_and_usage_seat_id_fkey",
+          "PKname": "Seat_pkey",
+          "table_source": "Seat",
+          "column": [
+            {
+              "name": "number",
+              "datatype": "string"
+            }
+          ],
+          "hierarchies": []
+        },
+        {
+          "name": "Station",
+          "FKname": "fact_sales_and_usage_station_id_fkey",
+          "PKname": "Station_pkey",
+          "table_source": "Station",
+          "hierarchies": [],
+          "column": [
+            {
+              "name": "name",
+              "datatype": "string"
+            }
+          ]
+        },
+        {
+          "name": "Age",
+          "table_source": "Age",
+          "FKname": "fact_sales_and_usage_age_id_fkey",
+          "PKname": "",
+          "hierarchies": [
+            {
+              "name": "Age Group",
+              "table_source": "Age Group",
+              "column": [
+                {
+                  "name": "age_group_value",
+                  "datatype": "string"
+                }
+              ],
+              "hierarchies": []
+            }
+          ],
+          "column": [
+            {
+              "name": "age_value",
+              "datatype": "string"
+            }
+          ]
+        },
+        {
+          "name": "Time(minutes)",
+          "table_source": "time",
+          "FKname": "fact_sales_and_usage_time_minutes_id_fkey",
+          "PKname": "time_minutes_pkey",
+          "hierarchies": [
+            {
+              "name": "Hour",
+              "table_source": "time",
+              "hierarchies": [],
+              "column": [
+                {
+                  "name": "hours",
+                  "datatype": "integer"
+                }
+              ]
+            }
+          ],
+          "column": []
+        },
+        {
+          "name": "Date_sale",
+          "table_source": "Date",
+          "FKname": "date_sale",
+          "PKname": "id",
+          "hierarchies": [
+            {
+              "name": "season",
+              "table_source": "Date",
+              "hierarchies": [
+                {
+                  "name": "year",
+                  "table_source": "Date",
+                  "hierarchies": []
+                }
+              ]
+            },
+            {
+              "name": "month_with_year",
+              "table_source": "Date",
+              "hierarchies": [
+                {
+                  "name": "year",
+                  "table_source": "Date",
+                  "hierarchies": []
+                }
+              ]
+            },
+            {
+              "name": "month",
+              "table_source": "Date",
+              "hierarchies": [
+              ]
+            },
+
+            {
+              "name": "day",
+              "table_source": "Date",
+              "hierarchies": [
+              ]
+            }
+          ],
+          "column": [
+
+          ]
+        },
+        {
+          "name": "Date usage",
+          "table_source": "Date",
+          "FKname": "date_usage",
+          "PKname": "id",
+          "hierarchies": [
+            {
+              "name": "season",
+              "table_source": "Date",
+              "hierarchies": [
+                {
+                  "name": "year",
+                  "table_source": "Date",
+                  "hierarchies": []
+                }
+              ]
+            },
+            {
+              "name": "month with year",
+              "table_source": "Date",
+              "hierarchies": [
+                {
+                  "name": "year",
+                  "table_source": "Date",
+                  "hierarchies": []
+                }
+              ]
+            },
+            {
+              "name": "month",
+              "table_source": "Date",
+              "hierarchies": [
+              ]
+            },
+
+            {
+              "name": "day",
+              "table_source": "Date",
+              "hierarchies": [
+              ]
+            }
+          ],
+          "column": [
+          ]
+        }
+      ],
+      "measures": [
+        {
+          "name": "wagon_prime_cost",
+          "datatype": "currency",
+          "type": "additive"
+        },
+        {
+          "name": "tickets_income",
+          "datatype": "currency",
+          "type": "additive"
+        },
+        {
+          "name": "services_income",
+          "datatype": "currency",
+          "type": "additive"
+        },
+        {
+          "name": "marginal_income",
+          "datatype": "currency",
+          "type": "additive"
+        },
+        {
+          "name": "occupancy_percentage",
+          "datatype": "percentage",
+          "type": "non-additive"
+        }
+      ]
+    },
+    {
+      "name": "fact_income_and_prime_cost_of_wagon",
+      "fact_type": "accumulation",
+      "table_source": "fact_income_and_prime_cost_of_wagon",
+      "dimensions": [
+        {
+          "name": "Wagon",
+          "table_source": "Wagon",
+          "FKname": "fact_income_and_prime_cost_of_wagon_wagon_id_fkey",
+          "PKname": "wagon_pkey",
+          "hierarchies": [
+            {
+              "name": "Train",
+              "table_source": "Wagon",
+              "hierarchies": [
+                {
+                  "name": "Class",
+                  "table_source": "Wagon",
+                  "column": [],
+                  "hierarchies": []
+                },
+                {
+                  "name": "Type",
+                  "table_source": "Wagon",
+                  "column": [
+                    {
+                      "name": "value",
+                      "datatype": "string"
+                    }
+                  ],
+                  "hierarchies": []
+                }
+              ],
+              "column": [
+                {
+                  "name": "number",
+                  "datatype": "string"
+                }
+              ]
+            },
+            {
+              "name": "Type",
+              "table_source": "Wagon",
+              "column": [],
+              "hierarchies": []
+            }
+          ],
+          "column": [
+            {
+              "name": "number",
+              "datatype": "string"
+            }
+          ]
+        },
+        {
+          "name": "Date",
+          "table_source": "Date",
+          "FKname": "",
+          "PKname": "",
+          "hierarchies": [
+            {
+              "name": "season",
+              "table_source": "Date",
+              "FKname": "",
+              "PKname": "",
+              "hierarchies": [
+                {
+                  "name": "year",
+                  "table_source": "Date",
+                  "FKname": "",
+                  "PKname": "",
+                  "hierarchies": []
+                }
+              ]
+            },
+            {
+              "name": "month with year",
+              "table_source": "Date",
+              "FKname": "",
+              "PKname": "",
+              "hierarchies": [
+                {
+                  "name": "year",
+                  "table_source": "Date",
+                  "FKname": "",
+                  "PKname": "",
+                  "hierarchies": []
+                }
+              ]
+            },
+            {
+              "name": "month",
+              "table_source": "Date",
+              "FKname": "",
+              "PKname": "",
+              "hierarchies": [
+              ]
+            },
+
+            {
+              "name": "day",
+              "table_source": "Date",
+              "FKname": "",
+              "PKname": "",
+              "hierarchies": [
+              ]
+            }
+          ],
+          "column": [
+          ]
+        },
+        {
+          "name": "Station",
+          "table_source": "Station",
+          "FKname": "fact_income_and_prime_cost_of_wagon_station_id_fkey",
+          "PKname": "Station_pkey",
+          "hierarchies": [],
+          "column": [
+            {
+              "name": "name",
+              "datatype": "string"
+            }
+          ]
+        }
+      ],
+      "measures": [
+        {
+          "name": "wagon_prime_cost",
+          "datatype": "currency",
+          "type": "additive"
+        },
+        {
+          "name": "tickets_income",
+          "datatype": "currency",
+          "type": "additive"
+        },
+        {
+          "name": "services_income",
+          "datatype": "currency",
+          "type": "additive"
+        },
+        {
+          "name": "marginal_income",
+          "datatype": "currency",
+          "type": "additive"
+        },
+        {
+          "name": "occupancy_percentage",
+          "datatype": "percentage",
+          "type": "non-additive"
+        },
+        {
+          "name": "usage_percentage",
+          "datatype": "percentage",
+          "type": "non-additive"
+        },
+        {
+          "name": "average_passenger_count",
+          "datatype": "integer",
+          "type": "semi-additive"
+        }
+      ]
+    },
+    {
+      "name": "fact_sales_service",
+      "fact_type": "transactional",
+      "table_source": "fact_sales_service",
+      "dimensions": [
+        {
+          "name": "Wagon",
+          "FKname": "fact_sales_service_wagon_id_fkey",
+          "PKname": "Wagon_pkey",
+          "table_source": "Wagon",
+          "hierarchies": [
+            {
+              "name": "Train",
+              "table_source": "Wagon",
+              "hierarchies": [
+                {
+                  "name": "Class",
+                  "table_source": "Wagon",
+                  "column": [
+                    {
+                      "name": "value",
+                      "datatype": "string"
+                    }
+                  ],
+                  "hierarchies": []
+                },
+                {
+                  "name": "Type",
+                  "table_source": "Wagon",
+                  "column": [
+                    {
+                      "name": "id",
+                      "datatype": "integer"
+                    },
+                    {
+                      "name": "value",
+                      "datatype": "string"
+                    }
+                  ],
+                  "hierarchies": []
+                }
+              ],
+              "column": [
+                {
+                  "name": "number",
+                  "datatype": "string"
+                }
+              ]
+            },
+            {
+              "name": "Type",
+              "table_source": "Type",
+              "column": [
+                {
+                  "name": "value",
+                  "datatype": "string"
+                }
+              ],
+              "hierarchies": []
+            }
+          ],
+          "column": [
+            {
+              "name": "number",
+              "datatype": "string"
+            }
+          ]
+        },
+        {
+          "name": "Date",
+          "table_source": "Date",
+          "FKname": "fact_sales_service_usage_date_id_fkey",
+          "PKname": "Date_pkey",
+          "hierarchies": [
+            {
+              "name": "season",
+              "table_source": "Date",
+              "hierarchies": [
+                {
+                  "name": "year",
+                  "table_source": "Date",
+                  "hierarchies": []
+                }
+              ]
+            },
+            {
+              "name": "month with year",
+              "table_source": "Date",
+              "hierarchies": [
+                {
+                  "name": "year",
+                  "table_source": "Date",
+                  "hierarchies": []
+                }
+              ]
+            },
+            {
+              "name": "month",
+              "table_source": "Date",
+              "hierarchies": [
+              ]
+            },
+
+            {
+              "name": "day",
+              "table_source": "Date",
+              "hierarchies": [
+              ]
+            }
+          ],
+          "column": [
+          ]
+        },
+        {
+          "name": "Age",
+          "table_source": "Age",
+          "FKname": "fact_sales_service_age_id_fkey",
+          "PKname": "Age_pkey",
+          "hierarchies": [
+            {
+              "name": "Age Group",
+              "table_source": "Age Group",
+              "column": [
+                {
+                  "name": "age_group_value",
+                  "datatype": "string"
+                }
+
+              ],
+              "hierarchies": []
+            }
+          ],
+          "column": [
+            {
+              "name": "age_value",
+              "datatype": "string"
+            }
+          ]
+        },
+        {
+          "name": "Service",
+          "FKname": "fact_sales_service_service_id_fkey",
+          "PKname": "Service_pkey",
+          "table_source": "Additional Service",
+          "column": [
+            {
+              "name": "name",
+              "datatype": "string"
+            }
+          ],
+          "hierarchies": []
+        },
+        {
+          "name": "Time(minutes)",
+          "table_source": "time",
+          "FKname": "fact_sales_service_time_id_fkey",
+          "PKname": "time_pkey",
+          "column": [
+            {
+              "name": "Hours",
+              "datatype": "integer"
+            }
+          ]
+        }
+      ],
+      "measures": [
+        {
+          "name": "service_price",
+          "datatype": "currency",
+          "type": "additive"
+        }
+      ]
+    }
+  ]
+}
