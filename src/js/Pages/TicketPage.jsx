@@ -1,13 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Navbar from '../Navbar';
 import Ticket from '../Ticket';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const TicketPage = () => {
     const [tickets, setTickets] = useState([]);
+    const location = useLocation();
+
+    useEffect(() => {
+        if (location.state && location.state.fromCheckout) {
+            Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Ticket usage updated successfully!',
+                timer: 5000,
+                toast: true,
+                position: 'top-center',
+                showConfirmButton: false,
+                timerProgressBar: true,
+            });
+        }
+    }, [location]);
 
     useEffect(() => {
         const fetchTickets = async () => {
@@ -27,19 +43,17 @@ const TicketPage = () => {
                         arrivalTime: ticket.routeParts[0]?.arrival_time_minutes,
                         trainNumber: ticket.train.number,
                         priceWithDiscount: ticket.price_with_discount,
-                        passengers: `${ticket.passenger.firstName} ${ticket.passenger.lastName}`,
+                        passengers: ticket.passenger,
                         wagonType: ticket.wagon.type
                     }));
-                
-                if (validTickets.length > 0) {
-                    setTickets(validTickets);
-                } else {
-                    setTickets([]);
-                    toast.info("All your tickets have been used or no tickets found.");
-                }
+                setTickets(validTickets);
             } catch (error) {
                 console.error("Failed to fetch tickets:", error);
-                toast.error("Failed to load tickets!");
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Failed to load tickets!',
+                });
             }
         };
 
@@ -47,7 +61,16 @@ const TicketPage = () => {
     }, []);
 
     const handleTicketReturnConfirm = () => {
-        toast.success("Ticket return confirmed successfully!");
+        Swal.fire({
+            icon: 'success',
+            title: 'Confirmed',
+            text: 'Ticket return confirmed successfully!',
+            timer: 3000,
+            toast: true,
+            position: 'top-center',
+            showConfirmButton: false,
+            timerProgressBar: true,
+        });
     };
 
     return (
@@ -57,13 +80,14 @@ const TicketPage = () => {
                 tickets.map((ticket, index) => (
                     <Ticket
                         key={index}
+                        id={ticket.id}
                         usageTimestamp={ticket.usageTimestamp}
                         wagonType={ticket.wagonType}
                         departureTime={ticket.departureTime}
                         arrivalTime={ticket.arrivalTime}
                         trainNumber={ticket.trainNumber}
                         priceWithDiscount={ticket.priceWithDiscount}
-                        passengers={ticket.passengers}
+                        passenger={ticket.passengers}
                         onTicketReturnConfirm={handleTicketReturnConfirm} 
                     />
                 ))
@@ -73,15 +97,6 @@ const TicketPage = () => {
                     <Link to="/book" className="return-ticket-button">Book Tickets</Link>
                 </div>
             )}
-            <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                closeOnClick={true}
-                pauseOnHover={true}
-                draggable={true}
-                progress={undefined}
-            />
         </div>
     );
 };

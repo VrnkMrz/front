@@ -9,6 +9,7 @@ h1{
     font-size: 1.3vw;
     text-transform: uppercase;
     font-weight: 600;
+	padding-top: 1.4vh !important;
 }
 
 h2{

@@ -3,12 +3,14 @@ import axios from "axios";
 import Carriage from "./Carriage";
 import ConfirmDialog from "./ConfirmDialog";
 import PassengerFormPopup from "./PassengerFormPopup";
+import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../css/Passenger.css";
 import "../css/Carriage.css";
 
 const Passengers = () => {
+  const navigate = useNavigate();
   const [passengers, setPassengers] = useState([]);
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -16,6 +18,11 @@ const Passengers = () => {
   const [selectedPassengerIds, setSelectedPassengerIds] = useState([]);
 
   const token = localStorage.getItem("token");
+
+  const checkOut = (event) => {
+    
+      navigate("/checkout");
+  };
 
   useEffect(() => {
     fetchData();
@@ -40,6 +47,7 @@ const Passengers = () => {
       "selectedPassengerId",
       JSON.stringify(selectedPassengerIds)
     );
+    fetchData();
   }, [selectedPassengerIds]);
 
   const fetchData = async () => {
@@ -49,14 +57,29 @@ const Passengers = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setPassengers(response.data);
+      const passengersWithTicketNumbers = response.data.map(passenger => ({
+        ...passenger,
+        ticket_number: localStorage.getItem("selectedSeats"),
+        seat_cost: null,
+        seat_id: null,
+      }));   
+      setPassengers(passengersWithTicketNumbers);
     } catch (error) {
       console.error("Error fetching passengers:", error);
     }
   };
 
-  const handleNewPassengerSubmit = async () => {
-    await fetchData();
+  const handleNewPassengerSubmit = () => {
+    toast.success("Passenger added successfully!", {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+    });
+    fetchData();
   };
 
   const handleRemovePassenger = async () => {
@@ -109,7 +132,7 @@ const Passengers = () => {
                 }`}
                 onClick={() => togglePassengerSelection(passenger.id)}
               >
-                {passenger.firstName} {passenger.lastName}
+                {passenger.firstName} {passenger.lastName} : {passenger.fare.title}
                               <button
                 className="delete-btn"
                 onClick={(e) => {
@@ -121,20 +144,26 @@ const Passengers = () => {
                 X
               </button>
               </div>
-              <Carriage />
+              <Carriage passengers={passengers} passenger={passenger} onSelectSeat={() => {fetchData();}}/>
             </div>
           </>
         ))}
       </div>
+      <div className="pass_buttons">
       <button className="add-passenger-btn" onClick={() => setShowPopup(true)}>
         Add New Passenger
       </button>
+      <button className="add-passenger-btn" onClick={checkOut}>
+          Next Page
+        </button>
+        </div>
       {showPopup && (
         <PassengerFormPopup
           onClose={() => {
             setShowPopup(false);
             fetchData();
           }}
+          onSubmit={handleNewPassengerSubmit} 
         />
       )}
       <ToastContainer />

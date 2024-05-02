@@ -1,17 +1,22 @@
 .popup-dropdown {
     position: absolute;
-    top: 100%; 
-    left: 75%; 
+    top: 10%;
+    left: 75%;
     width: 25%;
-    max-width: 300px; 
+    max-width: 300px;
     background: white;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     border-radius: 8px;
-    z-index: 1000;
-    overflow: hidden; 
+    z-index: 10000;
+    overflow: hidden;
     border: 1px solid #ccc;
 }
-
+* {
+    box-sizing: border-box;
+}
+*, ::after, ::before {
+    box-sizing: border-box;
+}
 .popup-dropdown ul {
     list-style: none;
     margin: 0;

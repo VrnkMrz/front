@@ -90,3 +90,7 @@
     color: #b30000;
   }
   
+  .pass_buttons{
+    display: flex;
+    flex-direction: column;
+  }
