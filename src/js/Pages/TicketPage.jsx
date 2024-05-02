@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import Navbar from '../Navbar';
 import Ticket from '../Ticket';
-import Swal from 'sweetalert2'; // Import SweetAlert2
+import Swal from 'sweetalert2'; 
 
 const TicketPage = () => {
     const [tickets, setTickets] = useState([]);

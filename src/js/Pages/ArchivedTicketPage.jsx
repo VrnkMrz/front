@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom'; // For creating a link to the booking page
+import Swal from 'sweetalert2'; 
+import { Link } from 'react-router-dom';
 import Navbar from '../Navbar';
 import ArchivedTicket from '../ArchivedTicket';
-import '../../css/ArchivedTicket.css'; // Ensure your CSS path is correct
+import '../../css/ArchivedTicket.css'; 
 
 const ArchivedTicketPage = () => {
   const [tickets, setTickets] = useState([]);
 
   useEffect(() => {
     const fetchTickets = async () => {
-      const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+      const token = localStorage.getItem('token'); 
       if (!token) {
         console.error("No token found in localStorage");
         return;
@@ -23,17 +24,22 @@ const ArchivedTicketPage = () => {
         });
         const usedTickets = response.data.filter(ticket => ticket.usage_timestamp !== null).map(ticket => ({
           id: ticket.id,
-          usageTimestamp: new Date(ticket.usage_timestamp).toLocaleString(), // Formatting the timestamp
+          usageTimestamp: new Date(ticket.usage_timestamp).toLocaleString(), 
           wagonType: ticket.wagon?.type,
-          departureTime: ticket.routeParts[0]?.departure_time_minutes, // Assuming there's at least one route part
+          departureTime: ticket.routeParts[0]?.departure_time_minutes, 
           arrivalTime: ticket.routeParts[0]?.arrival_time_minutes,
           trainNumber: ticket.train?.number,
           priceWithDiscount: ticket.price_with_discount,
-          passengers: `${ticket.passenger.firstName} ${ticket.passenger.lastName}`
+          passengers: ticket.passenger,
         }));
         setTickets(usedTickets);
       } catch (error) {
         console.error("Failed to fetch tickets:", error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Failed to load tickets!',
+      });
       }
     };
 
@@ -53,7 +59,7 @@ const ArchivedTicketPage = () => {
             arrivalTime={ticket.arrivalTime}
             trainNumber={ticket.trainNumber}
             priceWithDiscount={ticket.priceWithDiscount}
-            passengers={ticket.passengers}
+            passenger={ticket.passengers}
           />
         ))
       ) : (

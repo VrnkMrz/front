@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { ToastContainer, toast } from 'react-toastify';
+import React, { useEffect } from "react";
+import Swal from 'sweetalert2'; 
 import axios from "axios";
 import "../css/Ticket.css";
 
@@ -14,11 +14,6 @@ const Ticket = ({
   onTicketReturnConfirm,
 }) => {
 
-    useEffect(() => {
-        console.log("passenger", passenger);
-    }, []);
-
-
     const handleUseClick = async () => {
         const token = localStorage.getItem('token');
         if (!token) {
@@ -32,8 +27,20 @@ const Ticket = ({
             }
           });
           console.log("Ticket usage updated successfully:", response.data);
+          Swal.fire({
+            title: 'Success!',
+            text: 'Ticket used successfully!',
+            icon: 'success',
+            confirmButtonText: 'Ok'
+          });
         } catch (error) {
           console.error("Failed to update ticket usage:", error);
+          Swal.fire({
+            title: 'Error!',
+            text: 'Failed to use the ticket.',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
         }
       };
 
@@ -74,15 +81,6 @@ const Ticket = ({
             >
                 Use ticket
             </button>
-            <ToastContainer
-                position="top-center"
-                autoClose={5000}
-                hideProgressBar={false}
-                closeOnClick={true}
-                pauseOnHover={true}
-                draggable={true}
-                progress={undefined}
-            />
         </div>
     );
 };
