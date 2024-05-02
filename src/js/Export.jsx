@@ -37,7 +37,7 @@ const Export = ({ onClose }) => {
           });
         }
       }
-  
+      console.log(filters);
       setFilters(filters);
     }, [selectedCube]);
   
@@ -50,17 +50,7 @@ const Export = ({ onClose }) => {
     };
   
     const handleExport = async () => {
-      try {
-        const response = await axios.post('URL_TO_EXPORT_ENDPOINT', {
-          filters,
-          fileType: selectedFileType
-        });
-  
-        onClose();
-      } catch (error) {
-        console.error('Error exporting data:', error);
-        setError('Failed to export data. Please try again later.');
-      }
+    
     };
   
     return (
@@ -96,7 +86,6 @@ const Export = ({ onClose }) => {
               <option value="JSON">JSON</option>
             </select>
           </div>
-          {/* Кнопка експортувати */}
           <button onClick={handleExport}>Export</button>
         </div>
       </div>

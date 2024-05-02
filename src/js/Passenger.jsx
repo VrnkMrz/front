@@ -11,11 +11,27 @@ const Passengers = () => {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [passengerToDelete, setPassengerToDelete] = useState(null);
+  const [selectedPassengerIds, setSelectedPassengerIds] = useState([]);
+
   const token = localStorage.getItem('token');
 
   useEffect(() => {
     fetchData();
   }, [token]);
+
+  const togglePassengerSelection = (id) => {
+    setSelectedPassengerIds(prevSelected => {
+      if (prevSelected.includes(id)) {
+        return prevSelected.filter(selectedId => selectedId !== id);
+      } else {
+        return [...prevSelected, id];
+      }
+    });
+  };
+
+  useEffect(() => {
+    localStorage.setItem('selectedPassengerCount', JSON.stringify(selectedPassengerIds.length));
+  }, [selectedPassengerIds]);  
 
   const fetchData = async () => {
     try {
@@ -70,7 +86,9 @@ const Passengers = () => {
     <div className='section_pass'>
       <div className="passenger-list">
         {passengers.map((passenger) => (
-          <div key={passenger.id} className='passenger_pass'>
+          <div key={passenger.id} className={`passenger_pass ${selectedPassengerIds.includes(passenger.id) ? 'selected' : ''}`} 
+          onClick={() => togglePassengerSelection(passenger.id)}
+          >
             {passenger.firstName} {passenger.lastName}
             <button className="delete-btn" onClick={(e) => {
               e.stopPropagation(); 

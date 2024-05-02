@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../css/Carriage.css';
 import { useNavigate } from 'react-router-dom';
-import ServicePopup from './ServicePopup'; // Ensure this path is correct
+import ServicePopup from './ServicePopup'; 
 
 function CarriageFooter({ selectedSeatsCount, selectedSeatsPrice }) {
   const [showServicePopup, setShowServicePopup] = useState(false);
@@ -41,7 +41,7 @@ function CarriageFooter({ selectedSeatsCount, selectedSeatsPrice }) {
     <div className="reservation-footer">
       <div className='reservation-footer-text'>
         <p>Selected seats count: {selectedSeatsCount}</p>
-        <p>Total cost: {selectedSeatsPrice}</p>
+        <p>Total ticket cost: {selectedSeatsPrice}</p>
       </div>
       <div className='reservation-footer-text'>
         <p>Selected Services: {selectedServices.map(service => `${service.name} - ${service.quantity}`).join(', ')}</p>

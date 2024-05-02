@@ -7,15 +7,16 @@ import '../css/Carriage.css';
 const Carriage = () => {
   const [selectedSeats, setSelectedSeats] = useState(new Set());
   const [compartments, setCompartments] = useState([]);
-  const [totalTicketPrice, setTotalTicketPrice] = useState(0); // State to hold total ticket price
+  const [baseTicketPrice, setBaseTicketPrice] = useState(0); 
 
   useEffect(() => {
+    localStorage.setItem('selectedSeatCount', JSON.stringify(selectedSeats.size));
     const selectedWagon = JSON.parse(localStorage.getItem('selectedWagon'));
     if (selectedWagon) {
       fetchSeatData(selectedWagon);
       fetchTicketPrices(selectedWagon);
     }
-  }, []);
+  }, [selectedSeats]);
 
   const fetchSeatData = (wagon) => {
     axios.get(`http://localhost:9001/tickets/available-seats/${wagon.wagonId}`)
@@ -36,7 +37,7 @@ const Carriage = () => {
     })
     .then(response => {
       const totalPrice = response.data.reduce((acc, part) => acc + part.price, 0);
-      setTotalTicketPrice(totalPrice);
+      setBaseTicketPrice(totalPrice); 
     })
     .catch(error => console.error('Error fetching ticket prices:', error));
   };
@@ -61,6 +62,10 @@ const Carriage = () => {
     return compartments;
   }  
 
+  const calculateTotalPrice = () => {
+    return baseTicketPrice * selectedSeats.size;
+  };
+
   return (
     <div className='carriage-card'>
       <div className="carriage">
@@ -78,10 +83,9 @@ const Carriage = () => {
           </div>
         ))}
       </div>
-      <CarrigeFooter selectedSeatsCount={selectedSeats.size} selectedSeatsPrice={totalTicketPrice} />
+      <CarrigeFooter selectedSeatsCount={selectedSeats.size} selectedSeatsPrice={calculateTotalPrice()} />
     </div>
   );
 };
 
 export default Carriage;
-
