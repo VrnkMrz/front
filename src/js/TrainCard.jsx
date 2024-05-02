@@ -56,7 +56,7 @@ const TrainCard = ({ wagons, setRouteParts }) => {
   };
 
   const bookSeat = (wagon) => {
-    localStorage.setItem('selectedWagon', JSON.stringify(wagon)); // Store wagon data in localStorage
+    localStorage.setItem('selectedWagon', JSON.stringify(wagon)); 
     navigate("/select-seat");
   };
 

@@ -29,7 +29,6 @@ function InfoUser() {
     }
   }, []);
 
-  // Функція для оновлення даних користувача
   const updateUserInfo = (updatedUserInfo) => {
     setUserInfo(updatedUserInfo);
   };

@@ -4,6 +4,7 @@ import '../css/Seats.css';
 function Seat({ seatNumber, isOccupied, onSelect, isSelected }) {
   const selectSeat = () => {
     if (!isOccupied){
+      console.log("is selected: ", isSelected)
       onSelect(seatNumber, !isSelected);
     }
   };

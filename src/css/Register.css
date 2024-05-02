@@ -14,6 +14,7 @@ body {
 body, html, .App, #root, .auth-wrapper {
   width: 100%;
   height: 100%;
+  background-color: #e6e6e9;
 }
 
 .navbar-light {

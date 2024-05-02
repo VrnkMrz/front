@@ -19,7 +19,7 @@ const Navbar = ({label}) => {
   };
 
   return (
-    <nav className="navbar">
+    <nav className="myNavbar">
       <div className="navbar-container">
         <div className="navbar-logo">
           <img src={icon} alt="Tickets Logo" className='navbar-logo' onClick={book} />

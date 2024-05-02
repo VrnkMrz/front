@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import Navbar from '../Navbar.jsx';
-import Carriage from '../Carriage.jsx';
 import Passenger from '../Passenger.jsx';
 import '../../css/Carriage.css';
 
@@ -17,11 +15,6 @@ const SelectSeatPage = () => {
       setDeparture(JSON.parse(fetchedDeparture));
       setArrival(JSON.parse(fetchedArrival));
     }
-
-    // const selectedWagon = JSON.parse(localStorage.getItem('selectedWagon'));
-    // if (selectedWagon) {
-    //   fetchTicketPrices(selectedWagon);
-    // }
   }, []);
 
 
@@ -35,7 +28,6 @@ const SelectSeatPage = () => {
       </div>
       <div>
         <Passenger/>
-        <Carriage/>
       </div>
     </div>
   );

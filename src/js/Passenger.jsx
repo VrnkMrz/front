@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import ConfirmDialog from './ConfirmDialog';
-import PassengerFormPopup from './PassengerFormPopup';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import '../css/Passenger.css';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Carriage from "./Carriage";
+import ConfirmDialog from "./ConfirmDialog";
+import PassengerFormPopup from "./PassengerFormPopup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../css/Passenger.css";
+import "../css/Carriage.css";
 
 const Passengers = () => {
   const [passengers, setPassengers] = useState([]);
@@ -13,16 +15,16 @@ const Passengers = () => {
   const [passengerToDelete, setPassengerToDelete] = useState(null);
   const [selectedPassengerIds, setSelectedPassengerIds] = useState([]);
 
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     fetchData();
   }, [token]);
 
   const togglePassengerSelection = (id) => {
-    setSelectedPassengerIds(prevSelected => {
+    setSelectedPassengerIds((prevSelected) => {
       if (prevSelected.includes(id)) {
-        return prevSelected.filter(selectedId => selectedId !== id);
+        return prevSelected.filter((selectedId) => selectedId !== id);
       } else {
         return [...prevSelected, id];
       }
@@ -30,19 +32,26 @@ const Passengers = () => {
   };
 
   useEffect(() => {
-    localStorage.setItem('selectedPassengerCount', JSON.stringify(selectedPassengerIds.length));
-  }, [selectedPassengerIds]);  
+    localStorage.setItem(
+      "selectedPassengerCount",
+      JSON.stringify(selectedPassengerIds.length)
+    );
+    localStorage.setItem(
+      "selectedPassengerId",
+      JSON.stringify(selectedPassengerIds)
+    );
+  }, [selectedPassengerIds]);
 
   const fetchData = async () => {
     try {
-      const response = await axios.get('http://localhost:9001/passenger', {
+      const response = await axios.get("http://localhost:9001/passenger", {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       setPassengers(response.data);
     } catch (error) {
-      console.error('Error fetching passengers:', error);
+      console.error("Error fetching passengers:", error);
     }
   };
 
@@ -52,11 +61,14 @@ const Passengers = () => {
 
   const handleRemovePassenger = async () => {
     try {
-      await axios.delete(`http://localhost:9001/passenger/${passengerToDelete}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      await axios.delete(
+        `http://localhost:9001/passenger/${passengerToDelete}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
       toast.success("Passenger deleted successfully!", {
         position: "top-center",
         autoClose: 5000,
@@ -69,7 +81,7 @@ const Passengers = () => {
       fetchData();
       setShowConfirmDialog(false);
     } catch (error) {
-      console.error('Failed to delete passenger:', error);
+      console.error("Failed to delete passenger:", error);
       toast.error("Failed to delete passenger.", {
         position: "top-center",
         autoClose: 5000,
@@ -83,31 +95,48 @@ const Passengers = () => {
   };
 
   return (
-    <div className='section_pass'>
+    <div className="section_pass">
       <div className="passenger-list">
         {passengers.map((passenger) => (
-          <div key={passenger.id} className={`passenger_pass ${selectedPassengerIds.includes(passenger.id) ? 'selected' : ''}`} 
-          onClick={() => togglePassengerSelection(passenger.id)}
-          >
-            {passenger.firstName} {passenger.lastName}
-            <button className="delete-btn" onClick={(e) => {
-              e.stopPropagation(); 
-              setShowConfirmDialog(true);
-              setPassengerToDelete(passenger.id);
-            }}>X</button>
-          </div>
+          <>
+            <div>
+            </div>
+            <div className="carriage_wrapper">
+              <div
+                key={passenger.id}
+                className={`passenger_pass ${
+                  selectedPassengerIds.includes(passenger.id) ? "selected" : ""
+                }`}
+                onClick={() => togglePassengerSelection(passenger.id)}
+              >
+                {passenger.firstName} {passenger.lastName}
+                              <button
+                className="delete-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowConfirmDialog(true);
+                  setPassengerToDelete(passenger.id);
+                }}
+              >
+                X
+              </button>
+              </div>
+              <Carriage />
+            </div>
+          </>
         ))}
       </div>
-      <button className="add-passenger-btn" onClick={() => setShowPopup(true)}>Add New Passenger</button>
-      {showPopup && 
-        <PassengerFormPopup 
+      <button className="add-passenger-btn" onClick={() => setShowPopup(true)}>
+        Add New Passenger
+      </button>
+      {showPopup && (
+        <PassengerFormPopup
           onClose={() => {
             setShowPopup(false);
             fetchData();
-          }} 
-          onSubmit={handleNewPassengerSubmit} 
+          }}
         />
-      }
+      )}
       <ToastContainer />
       {showConfirmDialog && (
         <ConfirmDialog

@@ -66,8 +66,8 @@ const ServicePopup = ({ isOpen, onClose, onAddServices, wagonId }) => {
                         </li>
                     ))}
                 </ul>
-                <button onClick={handleAddServices}>Add</button>
                 <button onClick={onClose}>Close</button>
+                <button onClick={handleAddServices}>Add</button>
             </div>
         </div>
     );

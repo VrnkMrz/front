@@ -1,5 +1,4 @@
-/* Navbar.css */
-.navbar {
+.myNavbar {
 	background-color: rgb(126, 55, 55);
     color: white;
     display: flex;
@@ -10,7 +9,7 @@
   
   .navbar-container {
     width: 100%;
-    max-width: 1200px; /* Adjust as needed */
+    max-width: 1200px; 
     margin: auto;
     display: flex;
     justify-content: space-between;

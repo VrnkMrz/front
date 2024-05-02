@@ -75,7 +75,7 @@ const PassengerFormPopup = ({ onClose, onSubmit }) => {
           Authorization: `Bearer ${token}`
         }
       });
-      onSubmit(); // Викликати функцію для оновлення даних у Passengers
+      onSubmit(); 
       onClose();
     } catch (error) {
       console.error('Error adding passenger:', error);
@@ -93,7 +93,7 @@ const PassengerFormPopup = ({ onClose, onSubmit }) => {
         <input type="text" name="lastName" placeholder="Last Name" onChange={handleChange} />
         <input type="date" name="birthDate" onChange={handleChange} />
         <select name="fare" onChange={handleChange}>
-          {/* <option value="">Select Fare</option> */}
+          <option value="Default"></option>
           {fares.map(fare => (
             <option key={fare.id} value={fare.id}>{fare.title}</option>
           ))}

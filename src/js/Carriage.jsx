@@ -44,11 +44,13 @@ const Carriage = () => {
 
   const handleSelectSeat = (number, isSelected) => {
     setSelectedSeats(prevSelectedSeats => {
-      const newSelectedSeats = new Set(prevSelectedSeats);
+      const newSelectedSeats = new Set();
       if (isSelected) {
         newSelectedSeats.add(number);
       } else {
-        newSelectedSeats.delete(number);
+        if (!prevSelectedSeats.has(number)) {
+          newSelectedSeats.add(number);
+        }
       }
       return newSelectedSeats;
     });
