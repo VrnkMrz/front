@@ -22,6 +22,8 @@ import AdmainSelectTrain from './js/Pages/AdminSelectTrain';
 import AdmainAdmainistrateTrain from './js/Pages/AdmainAdmainistrateTrain';
 import InfoUser from './js/Pages/InfoUser';
 import AdminPanel from './js/Pages/AdminPanel';
+import AddTrainForm from './js/AddTrainForm';
+import Static from './js/Pages/Static';
 
 ReactDOM.render(
   <Router>
@@ -44,6 +46,9 @@ ReactDOM.render(
         <Route path='/dashboard_wagons' element={<DashboardWagonPage />} />
         <Route path='/account' element={<InfoUser />} />
         <Route path='/admin-panel' element={<AdminPanel/>} />
+        <Route path='/add-train' element={<AddTrainForm/>} />
+        <Route path='/ticket-filter' element={<Static/>} />
+
       </Routes>
     </React.StrictMode>
   </Router>,

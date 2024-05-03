@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../Navbar';
 import EditTrain from '../EditTrain';
 import DeleteTrain from '../DeleteTrain';
+import WagonFormPopup from '../AddTrainForm';
 import '../../css/Admin.css'
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -44,7 +45,7 @@ const AdmainAdmainistrateTrain = () => {
                         <li>Rental Price: {wagon.rental_price}</li>
                     </ul>
                 )}
-            </div>    
+            </div> 
         </div>
     );
 };
