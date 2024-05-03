@@ -55,7 +55,6 @@ function DashboardTickets() {
         <div>
             <div>
             <Link to="/admin-panel"><button className='dashboard-btn' link={"/admin-panel"}>Back</button></Link>
-                <button className='dashboard-btn' onClick={refreshData}>Data update</button>
                 <button className='dashboard-btn' onClick={() => setExportPopupVisible(true)}>Export</button>
             </div>
             <div ref={ref}></div> 

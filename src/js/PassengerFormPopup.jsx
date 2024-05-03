@@ -88,9 +88,9 @@ const PassengerFormPopup = ({ onClose, onSubmit }) => {
         <span className="close-btn" onClick={onClose}>&times;</span>
         <h3>Add New Passenger</h3>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <input type="text" name="firstName" placeholder="First Name" onChange={handleChange} />
-        <input type="text" name="lastName" placeholder="Last Name" onChange={handleChange} />
-        <input type="date" name="birthDate" onChange={handleChange} />
+        <input className='popup-content_input' type="text" name="firstName" placeholder="First Name" onChange={handleChange} />
+        <input className='popup-content_input' type="text" name="lastName" placeholder="Last Name" onChange={handleChange} />
+        <input className='popup-content_input' type="date" name="birthDate" onChange={handleChange} />
         <select name="fare" onChange={handleChange}>
           <option value="Default"></option>
           {fares.map(fare => (

@@ -28,12 +28,12 @@
     top: 10px;
 }
 
-.popup-content input {
+.popup-content_input {
     display: block;
-    width: 100%; /* Adjust width as needed */
+    width: 100%; 
     padding: 10px;
-    margin-bottom: 15px; /* This adds margin to the bottom of each input */
-    box-sizing: border-box; /* This ensures padding does not add to the width */
+    margin-bottom: 15px; 
+    box-sizing: border-box; 
     border: 1px solid #ccc;
     border-radius: 4px;
 }

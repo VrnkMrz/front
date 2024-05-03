@@ -61,8 +61,10 @@
   
   .filter-item {
     display: flex;
+    flex-direction: column;
     align-items: center;
     margin-bottom: 5px;
+    color: black;
   } 
   
   .filter-item input[type="checkbox"] {
@@ -81,4 +83,9 @@
   
   .subsubdimension {
     padding-left: 70px; /* Табуляція для підпідвимірів */
+  }
+
+  .filter-name{
+    display: flex;
+    flex-direction: row;
   }

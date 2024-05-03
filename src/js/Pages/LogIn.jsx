@@ -22,7 +22,7 @@ const isPhoneValid = (phone) => {
 function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    "phone": "+3806777777",
+    "phone": "+380677777799",
     "password": "11111111"
   });
 
